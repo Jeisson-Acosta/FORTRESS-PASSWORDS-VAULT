@@ -16,3 +16,31 @@ Content-Type: application/json
     "usuemail": "json@gmail.com",
     "usupwd": "123456"
 }
+
+### Crear una app con su informacion
+POST http://localhost:5000/main/create-app
+Content-Type: application/json
+
+{
+    "connom": "Netflix",
+    "conusuario": "jeidacosta@hotmail.com",
+    "conpwd": "contranet",
+    "connom_icon": "movie",
+    "usuid": 1,
+    "catid": 1
+}
+
+### Actualizar la info de una app creada
+PATCH http://localhost:5000/main/update-app
+Content-Type: application/json
+
+{
+    "conid": 1,
+    "connom": "Netflix",
+    "conusuario": "jeidacosta@hotmail.com",
+    "conpwd": "contranet",
+    "connom_icon": "song",
+    "usuid": 1,
+    "catid": 1
+
+}
