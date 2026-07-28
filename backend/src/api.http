@@ -1,0 +1,18 @@
+### Registrar usuario en aplicacion
+POST http://localhost:5000/auth/register
+Content-Type: application/json
+
+{
+    "usunom": "Jeisson Acosta",
+    "usuemail": "json@gmail.com",
+    "usupwd": "123456"
+}
+
+### Iniciar sesion en la aplicacion
+POST http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+    "usuemail": "json@gmail.com",
+    "usupwd": "123456"
+}
