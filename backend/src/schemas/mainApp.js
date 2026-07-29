@@ -19,10 +19,18 @@ const updateAppSchema = z.object({
     catid: z.int().optional(),
 })
 
+const deleteAppSchema = z.object({
+    conid: z.int({ required_error: 'The parameter conid is required' }),
+})
+
 export function validateDataCreateApp(data) {
     return createAppSchema.safeParse(data)
 }
 
 export function validateDataUpdateApp(data) {
     return updateAppSchema.safeParse(data)
+}
+
+export function validateDataDeleteAp(data) {
+    return deleteAppSchema.safeParse(data)
 }

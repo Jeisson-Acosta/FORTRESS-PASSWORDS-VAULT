@@ -1,5 +1,5 @@
 import { MainAppModel } from "../models/mainAppModel.js"
-import { validateDataCreateApp, validateDataUpdateApp } from "../schemas/mainApp.js"
+import { validateDataCreateApp, validateDataDeleteAp, validateDataUpdateApp } from "../schemas/mainApp.js"
 
 export class MainAppController {
 
@@ -19,7 +19,18 @@ export class MainAppController {
 
         const resultModel = await MainAppModel.updateApp({ data: resultValidateData.data })
         if (!resultModel.ok) { return res.status(500).json(resultModel) }
-        
+
+        res.json(resultModel)
+    }
+
+    static async deleteApp(req, res) {
+        req.params.conid = Number(req.params.conid)
+        const resultValidateData = validateDataDeleteAp(req.params)
+        if (!resultValidateData.success) { return res.status(400).json({ error: JSON.parse(resultValidateData.error.message) }) }
+
+        const resultModel = await MainAppModel.deleteApp({ data: resultValidateData.data })
+        if (!resultModel.ok) { return res.status(500).json(resultModel) }
+
         res.json(resultModel)
     }
 

@@ -44,4 +44,22 @@ export class MainAppModel {
         return resultDB
     }
 
+    static async deleteApp({ data }) {
+        const { conid } = data
+
+        const existedAppInDB = await manageDB(null, [conid], 'SELECT COUNT(*) AS count FROM tbl_contras WHERE conid = ?', 'CO')
+        if (existedAppInDB.data[0].count === 0) {
+            existedAppInDB.ok = false
+            existedAppInDB.data = null
+            existedAppInDB.message = "Aplicacion no encontrada"
+            return existedAppInDB
+        }
+
+        const resultDB = await manageDB('main_app_create_app', [conid, null, null, null, null, null, null, 'DEL'])
+        resultDB.ok = true
+        resultDB.message = "Aplicacion eliminada correctamente"
+
+        return resultDB
+    }
+
 }

@@ -44,3 +44,6 @@ Content-Type: application/json
     "catid": 1
 
 }
+
+### Eliminar una app creada
+DELETE http://localhost:5000/main/delete-app/2
