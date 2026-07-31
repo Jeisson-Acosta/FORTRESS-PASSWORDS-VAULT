@@ -47,3 +47,26 @@ Content-Type: application/json
 
 ### Eliminar una app creada
 DELETE http://localhost:5000/main/delete-app/2
+
+### Crear una categoria
+POST http://localhost:5000/category/create
+Content-Type: application/json
+
+{
+    "catcod": "PERS",
+    "catnom": "Personal",
+    "usuid": 1
+}
+
+### Actualizar una categoria
+PATCH http://localhost:5000/category/update
+Content-Type: application/json
+
+{
+    "catid": 2,
+    "catcod": "PERS",
+    "catnom": "Personal"
+}
+
+### Eliminar una categoria
+DELETE http://localhost:5000/category/delete/2
