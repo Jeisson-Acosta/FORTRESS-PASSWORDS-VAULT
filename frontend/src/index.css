@@ -1,0 +1,30 @@
+@font-face {
+  font-family: fontMain;
+  src: url('./fonts/Inter/static/Inter_18pt-Light.ttf');
+}
+@font-face {
+  font-family: fontPrincipalTitle;
+  src: url('./fonts/Inter/static/Inter_28pt-Bold.ttf');
+}
+@font-face {
+  font-family: fontSubtitle;
+  src: url('./fonts/Inter/static/Inter_18pt-Medium.ttf');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --principalTitleColor: #adc6ff;
+  --subtitlesColor: #dae2fd;
+  --mainColor: #c0c4d4;
+}
+
+body {
+  background: #020617;
+  color: var(--mainColor);
+  font-family: fontMain;
+}

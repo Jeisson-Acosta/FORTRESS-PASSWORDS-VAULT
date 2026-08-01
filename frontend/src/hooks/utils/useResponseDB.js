@@ -1,0 +1,10 @@
+import { useContext } from "react"
+import { ResponseDBContext } from "../../context/responseDB.jsx"
+
+export const useResponseDB = () => {
+    const context = useContext(ResponseDBContext)
+
+    if (context === undefined) {
+        throw new Error('useResponseDB must be used with a ResponseDBProvider')
+    }
+}
