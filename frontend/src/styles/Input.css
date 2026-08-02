@@ -1,0 +1,25 @@
+.input-component {
+    position: relative;
+    width: 100%;
+    & input {
+        width: 100%;
+        padding: 14px;
+        font-size: 14px;
+        border-radius: 14px;
+        outline: none;
+        border: 2px solid #252b3a;
+        padding-left: 40px;
+        background-color: #060e20;
+        color: var(--mainColor);
+    }
+    & .icon-input-component {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        & svg {
+            width: 24px;
+        }
+    }
+}

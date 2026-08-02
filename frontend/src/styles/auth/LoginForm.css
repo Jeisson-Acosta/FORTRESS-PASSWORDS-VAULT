@@ -2,7 +2,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     padding: 20px;
+    gap: 50px;
     & .header-form-login {
         display: flex;
         flex-direction: column;
@@ -17,6 +19,43 @@
             & svg {
                 width: 44px;
                 height: 44px;
+            }
+        }
+    }
+
+    .form-login {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        background: #0c1224;
+        padding: 26px;
+        min-width: 300px;
+        max-width: 400px;
+        width: 100%;
+        border-radius: 20px;
+        border: 1px solid #171e2d;
+        & label {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-family: fontSubtitle;
+            color: var(--subtitlesColor);
+        }
+
+        & button[type="submit"] {
+            cursor: pointer;
+            background: #4d8eff;
+            padding: 20px;
+            border: none;
+            outline: none;
+            border-radius: 16px;
+            font-size: 16px;
+            color: #124084;
+            font-weight: bold;
+            transition: background, color .25s ease;
+            &:hover {
+                background: #144cad;
+                color: #ffffff;
             }
         }
     }
