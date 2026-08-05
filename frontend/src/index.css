@@ -18,6 +18,8 @@
 }
 
 :root {
+  --buttonColor: #002e6a;
+  --buttonBackground: #adc6ff;
   --principalTitleColor: #adc6ff;
   --subtitlesColor: #dae2fd;
   --mainColor: #c0c4d4;

@@ -6,7 +6,20 @@ import { categoryRouter } from './routes/category.js'
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+    origin: (origin, callback) => {
+        const ACCEPTED_ORIGINS = [
+            'http://localhost:5173'
+        ]
+
+        if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
+            return callback(null, true)
+        }
+
+        return callback(new Error('Not allowed by CORS'))
+    },
+    credentials: true
+}))
 app.use(express.json())
 
 

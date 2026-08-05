@@ -3,14 +3,35 @@ import { LockSimpleIcon, MailboxIcon, ShieldIcon } from "../../components/Icons.
 
 import { Input } from '../../components/Input.jsx'
 import { useInput } from '../../hooks/useInput.js'
+import { useRequestDB } from '../../hooks/utils/useRequestDB.js'
+import { useNavigate } from 'react-router-dom'
+
+import toast from 'react-hot-toast'
 
 export function LoginForm() {
+
+    const { requestDB } = useRequestDB();
+    const navigate = useNavigate()
 
     const email = useInput('')
     const password = useInput('')
 
-    const handleSubmitForm = (e) => {
+    const handleSubmitForm = async (e) => {
         e.preventDefault()
+
+        if (!email.value || !password.value) {
+            toast.error('El correo y la contraseña no pueden estar vacios')
+            return
+        }
+
+        const responseDB = await requestDB('auth/login', 'POST', { usuemail: email.value, usupwd: password.value })
+        if (!responseDB || !responseDB.ok) {
+            toast.error(`${responseDB ? responseDB.message : 'UPS, algo salio mal, vuelve a intentarlo'}`)
+            return
+        }
+
+        // Poner info en el contexto
+        navigate('/boveda')
     }
 
     return (
@@ -62,6 +83,14 @@ export function LoginForm() {
                     Sign In
                 </button>
             </form>
+
+            <button style={{background: 'transparent', cursor: 'pointer', border: 'none', outline: 'none', color: 'var(--mainColor)', fontWeight: 'bold', marginTop: '-30px'}}>
+                Don´t have an account?
+                <span style={{color: 'var(--subtitlesColor)'}}>
+                    {' '}
+                    Register Now
+                </span>
+            </button>
         </section>
     )
 }

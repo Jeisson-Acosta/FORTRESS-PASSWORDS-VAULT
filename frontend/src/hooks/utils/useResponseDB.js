@@ -7,4 +7,6 @@ export const useResponseDB = () => {
     if (context === undefined) {
         throw new Error('useResponseDB must be used with a ResponseDBProvider')
     }
+
+    return context
 }

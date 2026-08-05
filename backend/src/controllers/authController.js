@@ -8,7 +8,7 @@ export class AuthController {
         if (!resultValidateData.success) { return res.status(400).json({ error: JSON.parse(resultValidateData.error.message) }) }
 
         const resultModel = await AuthModel.registerUserApp({ data: resultValidateData.data })
-        if (!resultModel.ok) { return res.status(500).json(resultModel) }
+        if (!resultModel.ok) { return res.json(resultModel) }
 
         res.status(201).json(resultModel)
     }
@@ -18,7 +18,7 @@ export class AuthController {
         if (!resultValidateData.success) { return res.status(400).json({ error: JSON.parse(resultValidateData.error.message) }) }
 
         const resultModel = await AuthModel.loginUserApp({ data: resultValidateData.data })
-        if (!resultModel.ok) { return res.status(500).json(resultModel) }
+        if (!resultModel.ok) { return res.json(resultModel) }
 
         res.json(resultModel)
     }
