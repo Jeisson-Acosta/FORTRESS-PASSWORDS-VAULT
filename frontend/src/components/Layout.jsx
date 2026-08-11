@@ -5,10 +5,14 @@ import { HeaderApp } from './HeaderApp.jsx'
 
 export function Layout() {
     return (
-        <section>
-            <MenuApp />
-            <HeaderApp />
-            <Outlet />
+        <section style={{display: 'flex'}}>
+            <div>
+                <MenuApp />
+            </div>
+            <div>
+                <HeaderApp />
+                <Outlet />
+            </div>
         </section>
     )
 }

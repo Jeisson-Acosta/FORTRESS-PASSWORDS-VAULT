@@ -20,6 +20,7 @@
 :root {
   --buttonColor: #002e6a;
   --buttonBackground: #adc6ff;
+  --buttonBackgroundHover: #5983e3;
   --principalTitleColor: #adc6ff;
   --subtitlesColor: #dae2fd;
   --mainColor: #c0c4d4;
