@@ -2,6 +2,8 @@ import '../../styles/auth/LoginForm.css'
 import { LockSimpleIcon, MailboxIcon, ShieldIcon } from "../../components/Icons.jsx"
 
 import { Input } from '../../components/Input.jsx'
+
+import { useUserLogin } from '../../hooks/useUserLogin.js'
 import { useInput } from '../../hooks/useInput.js'
 import { useRequestDB } from '../../hooks/utils/useRequestDB.js'
 import { useNavigate } from 'react-router-dom'
@@ -10,6 +12,7 @@ import toast from 'react-hot-toast'
 
 export function LoginForm() {
 
+    const { setUserLogin } = useUserLogin()
     const { requestDB } = useRequestDB();
     const navigate = useNavigate()
 
@@ -30,6 +33,8 @@ export function LoginForm() {
             return
         }
 
+        setUserLogin(responseDB.data[0])
+        
         // Poner info en el contexto
         navigate('/boveda')
     }

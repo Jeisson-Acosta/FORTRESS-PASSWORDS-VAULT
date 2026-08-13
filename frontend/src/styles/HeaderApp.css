@@ -1,0 +1,32 @@
+.header-app {
+    background-color: #0b1326;
+    width: 100%;
+    height: 60px;
+    z-index: 1;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    
+    & .header-app-info-user {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        & #icon-notifications {
+            cursor: pointer;
+            & svg {                
+                width: 20px;
+                height: 20px;
+            }
+        }
+        & button {
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            border-radius: 50%;
+            border: none;
+            outline: none;
+        }
+    }
+}

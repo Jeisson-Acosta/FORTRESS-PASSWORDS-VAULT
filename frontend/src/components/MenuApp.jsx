@@ -1,21 +1,17 @@
 import { ClockLogIcon, FoldersIcon, LockSimpleIcon, PlusIcon, SignOutIcon } from "./Icons.jsx"
 import { NavLink } from "react-router-dom"
 
-import { useShowMenu } from "../hooks/useShowMenu.js"
 import { useEffect } from "react"
 
-export function MenuApp() {
-
-    const { showMenu, handlerShowMenu } = useShowMenu()
+export function MenuApp({ showMenu, handlerShowMenu }) {
 
     useEffect(() => {
         handlerShowMenu(true)
     }, [])
 
-
     return (
         <section className="container-menu-app" style={{transform: showMenu ? 'translateX(0%)' : 'translateX(-100%)'}}>
-            <div style={{width: '100%'}}>
+            <div style={{width: '100%', marginTop: '56px'}}>
                 <header className="header-menu-app">
                     <div style={{width: '100%'}}>
                         <h4 style={{ color: 'var(--principalTitleColor)' }}>
