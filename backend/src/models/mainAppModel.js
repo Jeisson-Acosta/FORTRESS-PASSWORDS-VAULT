@@ -62,4 +62,11 @@ export class MainAppModel {
         return resultDB
     }
 
+    static async getInfoVaultOption({ data }) {
+        const { usuid } = data
+
+        const resultDB = await manageDB('load_info_option_vault', [usuid])
+        return resultDB
+    }
+
 }

@@ -37,8 +37,7 @@ export class AuthModel {
             return passwordInDB
         }
 
-        // Mientras asi, luego un SP para traer la info principal
-        const resultInfoUser = await manageDB(null, [usuemail], 'SELECT usunom, usuemail FROM tbl_usuario WHERE usuemail = ?', 'CO')
+        const resultInfoUser = await manageDB(null, [usuemail], 'SELECT usuid, usunom, usuemail FROM tbl_usuario WHERE usuemail = ?', 'CO')
         return resultInfoUser
     }
 

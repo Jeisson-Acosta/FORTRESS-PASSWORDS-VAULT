@@ -1,5 +1,5 @@
 import { MainAppModel } from "../models/mainAppModel.js"
-import { validateDataCreateApp, validateDataDeleteAp, validateDataUpdateApp } from "../schemas/mainApp.js"
+import { validateDataCreateApp, validateDataDeleteAp, validateDataGetInfoVaultOption, validateDataUpdateApp } from "../schemas/mainApp.js"
 
 export class MainAppController {
 
@@ -29,6 +29,16 @@ export class MainAppController {
         if (!resultValidateData.success) { return res.status(400).json({ error: JSON.parse(resultValidateData.error.message) }) }
 
         const resultModel = await MainAppModel.deleteApp({ data: resultValidateData.data })
+        if (!resultModel.ok) { return res.status(500).json(resultModel) }
+
+        res.json(resultModel)
+    }
+
+    static async getInfoVaultOption(req, res) {
+        const resultValidateData = validateDataGetInfoVaultOption(req.params)
+        if (!resultValidateData) { return res.status(400).json({ error: JSON.parse(resultValidateData.error.message) }) }
+
+        const resultModel = await MainAppModel.getInfoVaultOption({ data: resultValidateData.data })
         if (!resultModel.ok) { return res.status(500).json(resultModel) }
 
         res.json(resultModel)

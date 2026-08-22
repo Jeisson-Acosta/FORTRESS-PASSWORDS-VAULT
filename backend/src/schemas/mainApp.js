@@ -23,6 +23,10 @@ const deleteAppSchema = z.object({
     conid: z.int({ required_error: 'The parameter conid is required' }),
 })
 
+const getInfoVaultOptionSchema = z.object({
+    usuid: z.string({ required_error: 'The parameter usuid is required' }).transform(id => Number(id))
+})
+
 export function validateDataCreateApp(data) {
     return createAppSchema.safeParse(data)
 }
@@ -33,4 +37,8 @@ export function validateDataUpdateApp(data) {
 
 export function validateDataDeleteAp(data) {
     return deleteAppSchema.safeParse(data)
+}
+
+export function validateDataGetInfoVaultOption(data) {
+    return getInfoVaultOptionSchema.safeParse(data)
 }
