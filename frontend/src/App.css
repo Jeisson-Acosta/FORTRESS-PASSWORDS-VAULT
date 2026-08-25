@@ -1,0 +1,22 @@
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  background-color: var(--buttonBackground);
+  color: var(--buttonColor);
+  font-weight: bold;
+  border: none;
+  outline: none;
+  transition: background-color .25s ease;
+  border-radius: 12px;
+  padding: 12px;
+    & svg {
+        width: 20px;
+        height: 20px; 
+    }
+  &:hover {
+    background-color: var(--buttonBackgroundHover);
+  }
+}

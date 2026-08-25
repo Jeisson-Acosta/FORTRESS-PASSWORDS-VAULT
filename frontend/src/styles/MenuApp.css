@@ -16,28 +16,13 @@
         flex-direction: column;
         gap: 30px;
         & button {
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            background-color: var(--buttonBackground);
-            color: var(--buttonColor);
-            border: none;
-            outline: none;
-            padding: 12px;
-            font-weight: bold;
-            border-radius: 12px;
-            transition: background-color .30s ease;
             & svg {
                 fill: var(--buttonColor);
                 stroke-width: 10px;
                 width: 20px;
                 height: 20px; 
             }
-            &:hover {
-                background-color: var(--buttonBackgroundHover);
-            }
+
         }
     }
     & .options-menu-app {
