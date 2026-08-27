@@ -3,11 +3,10 @@ import { useUserLogin } from '../../hooks/useUserLogin.js'
 import { useRequestDB } from '../../hooks/utils/useRequestDB.js'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { GlobeIcon, LockSimpleIcon, PlusIcon, UserCircleIcon } from '../../components/Icons.jsx'
+import { CopyIcon, EyeIcon, PencilSimpleIcon, PlusIcon, TrashIcon } from '../../components/Icons.jsx'
+import { ButtonCategoryFilter } from '../../components/vault/ButtonCategoryFilter.jsx'
+import { ModalCreateEntry } from '../../components/vault/ModalCreateEntry.jsx'
 import { IconsEntries } from '../../components/IconsEntries.jsx'
-import { Input } from '../../components/Input.jsx'
-
-import { useInput } from '../../hooks/useInput.js'
 
 function CardHeader({ title, value, colorValue }) {
     return (
@@ -20,20 +19,15 @@ function CardHeader({ title, value, colorValue }) {
     )
 }
 
+
 export function Vault() {
 
     const [showModalCreateEntry, setShowModalCreateEntry] = useState(false)
-    const [activeIconEntry, setActiveIconEntry] = useState('LockSimpleIcon')
     const [selectedCategory, setSelectedCategory] = useState(null)
 
     const [infoVault, setInfoVault] = useState(null)
-    const [filterActive, setFilterActive] = useState('TOD')
     const { userLogin } = useUserLogin()
     const { requestDB, isLoading } = useRequestDB()
-
-    const nameServiceEntry = useInput('')
-    const userEntry = useInput('')
-    const passwordEntry = useInput('')
 
     const getInfoVault = async () => {
         const resultDB = await requestDB(`main/get-info-vault/${userLogin.usuid}`, 'GET')
@@ -46,38 +40,6 @@ export function Vault() {
         resultDB.data[0].passwords_list = resultDB.data[0].passwords_list ? JSON.parse(resultDB.data[0].passwords_list) : resultDB.data[0].passwords_list
         setInfoVault(resultDB.data[0])
         setSelectedCategory(resultDB.data[0].category_list.find(cat => cat.catcod === 'PER').catid)
-    }
-
-
-    const handleClickSaveEntry = async () => {
-
-        if (!nameServiceEntry.value || !userEntry.value || !passwordEntry.value) {
-            toast.error('Todos los campos deben de estar diligenciados')
-            return
-        }
-
-        const infoToSave = {
-            connom: nameServiceEntry.value,
-            conusuario: userEntry.value,
-            conpwd: passwordEntry.value,
-            connom_icon: activeIconEntry,
-            usuid: userLogin.usuid,
-            catid: selectedCategory,
-        }
-
-        const resultDB = await requestDB('main/create-app', 'POST', infoToSave)
-        if (!resultDB.ok) {
-            toast.error(resultDB.message)
-            return
-        }
-
-        toast.success('¡Entrada creada correctamente!')
-        setShowModalCreateEntry(false)
-        setActiveIconEntry('LockSimpleIcon')
-        setSelectedCategory(null)
-
-        getInfoVault()
-
     }
 
     useEffect(() => {
@@ -105,25 +67,8 @@ export function Vault() {
             </header>
 
             <div style={{padding: '20px'}}>
-                {infoVault.category_list && 
-                    <div className='list-categories'>
-                        <button 
-                            className={`bt-category ${filterActive === 'TOD' ? 'active' : ''}`}
-                            onClick={() => setFilterActive('TOD')}
-                        >
-                            Todas
-                        </button>
-                        {infoVault.category_list.map(category => (
-                            <button 
-                                className={`bt-category ${filterActive === category.catcod ? 'active' : ''}`} 
-                                key={category.catid}
-                                onClick={() => setFilterActive(category.catcod)}
-                            >
-                                {category.catnom}
-                            </button>
-                        ))}
-                    </div>
-                }
+
+                <ButtonCategoryFilter categoryList={infoVault.category_list} />
                 
                 {!infoVault.passwords_list 
                     && (
@@ -137,100 +82,66 @@ export function Vault() {
                     )
                 }
 
-                {
-                    showModalCreateEntry && (
-                        <aside className='modal-create-entry'>
-                            <section className='container-fields-modal'>
-                                <header>
-                                    <h2 style={{color: 'var(--principalTitleColor)'}}>
-                                        Crear entrada
-                                    </h2>
-                                    <p>
-                                        Añade un nuevo servicio para tu lista de entradas
-                                    </p>
-                                </header>
+                <ModalCreateEntry
+                    showModalCreateEntry={showModalCreateEntry}
+                    setShowModalCreateEntry={setShowModalCreateEntry}
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
+                    categoryList={infoVault.category_list} 
+                    getInfoVault={getInfoVault} 
+                />
 
-                                <div className='container-all-fields'>
-                                    <div style={{marginBottom: '12px'}}>
-                                        <h5 style={{fontFamily: 'fontSubtitle', fontSize: '13px', color: 'var(--subtitlesColor)', fontWeight: 'normal', marginBottom: '8px'}}>
-                                            Icono del servicio
-                                        </h5>
-                                        <div className='container-icons-service'>
-                                            {Object.keys(IconsEntries).map(icon => {
+                {infoVault.passwords_list && (
+                    <section className='container-grid-entries'>
+                        {infoVault.passwords_list.map(entry => {
 
-                                                const Icon = IconsEntries[icon]
+                            const Icon = IconsEntries[entry.connom_icon]
 
-                                                return (
-                                                    <div 
-                                                        key={icon}
-                                                        className={`icon-service ${icon === activeIconEntry ? 'active' : ''}`}
-                                                        onClick={() => setActiveIconEntry(icon)}
-                                                    >
-                                                        <Icon />
-                                                    </div>
-                                                )
-                                            })}
+                            return (
+                                <>                                
+                                    <div key={entry.conid} className='card-entry'>
+                                        <div className="actions-card-entry">
+                                            <button>
+                                                <PencilSimpleIcon />
+                                            </button>
+                                            <button>
+                                                <TrashIcon />
+                                            </button>
+                                        </div>
+                                        <header>
+                                            <div className="icon-entry">
+                                                <Icon />
+                                            </div>
+                                            <div className='name-user-entry'>
+                                                <h3 className='name-entry'>
+                                                    {entry.connom}
+                                                </h3>
+                                                <p className='user-entry'>
+                                                    {entry.conusuario}
+                                                </p>
+                                            </div>
+                                        </header>
+                                        <div className="container-input-pwd-entry">
+                                            <input 
+                                                type="password" 
+                                            />
+                                            <div className="icons-actions-input-pwd">
+                                                <button className="icon-action-pwd">
+                                                    <EyeIcon />
+                                                </button>
+                                                <button className="icon-action-pwd">
+                                                    <CopyIcon />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <label htmlFor="service-name">
-                                        Nombre del Servicio
-                                        <Input 
-                                            icon={<GlobeIcon />}  
-                                            id={'service-name'}
-                                            type={'text'}
-                                            placeholder={'EJ: Github, Netflix, Gmail...'}
-                                            {...nameServiceEntry}
-                                        />
-                                    </label>
-                                    <label htmlFor="category">
-                                        Categoría
-                                        <select id="category" onChange={(e) => setSelectedCategory(e.target.value)}>
-                                            {infoVault.category_list.map(category => (
-                                                <option value={category.catid}>
-                                                    {category.catnom}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </label>
-                                    <label htmlFor="username">                                        
-                                        Usuario o Correo
-                                        <Input 
-                                            icon={<UserCircleIcon />}  
-                                            id={'username'}
-                                            type={'text'}
-                                            placeholder={'nombre@dominio.com'}
-                                            {...userEntry}
-                                        />                                        
-                                    </label>
-                                    <label htmlFor="password">                                        
-                                        Contraseña
-                                        <Input 
-                                            icon={<LockSimpleIcon />}  
-                                            id={'password'}
-                                            type={'password'}
-                                            placeholder={'●●●●●●●●●●'}
-                                            {...passwordEntry}
-                                        />                                        
-                                    </label>
-                                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px'}}>
-                                        <button 
-                                            style={{width: '100%', backgroundColor: 'transparent', color: 'var(--mainColor)', border: '1px solid #252b3a'}}
-                                            onClick={() => setShowModalCreateEntry(false)}
-                                        >
-                                            Cancelar
-                                        </button>
-                                        <button style={{width: '100%'}} onClick={handleClickSaveEntry}>
-                                            Guardar Entrada
-                                        </button>
-                                    </div>
-                                </div>
-
-                            </section>
-                        </aside>
-                    )
-                }
+                                </>
+                            )
+                        })}
+                    </section>
+                )}
+                
             </div>
-
 
         </section>
     )

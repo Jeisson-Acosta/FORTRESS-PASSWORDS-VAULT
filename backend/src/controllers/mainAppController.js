@@ -5,7 +5,7 @@ export class MainAppController {
 
     static async createApp(req, res) {
         const resultValidateData = validateDataCreateApp(req.body)
-        if (!resultValidateData.success) { return res.status(400).json({ error: JSON.parse(resultValidateData.data.error) }) }
+        if (!resultValidateData.success) { return res.status(400).json({ error: JSON.parse(resultValidateData.error.message) }) }
 
         const resultModel = await MainAppModel.createApp({ data: resultValidateData.data })
         if (!resultModel.ok) { return res.status(500).json(resultModel) }
