@@ -9,16 +9,20 @@ import { Input } from '../Input.jsx'
 import { IconsEntries } from '../IconsEntries.jsx'
 import { GlobeIcon, UserCircleIcon, LockSimpleIcon } from '../Icons.jsx'
 
-export function ModalCreateEntry({ showModalCreateEntry, setShowModalCreateEntry, selectedCategory, setSelectedCategory, categoryList, getInfoVault }) {
+export function ModalCreateEntry({ showModalCreateEntry, setShowModalCreateEntry, selectedCategory, setSelectedCategory, categoryList, getInfoVault, infoToEdit = null }) {
 
-    const [activeIconEntry, setActiveIconEntry] = useState('LockSimpleIcon')
+    console.log(infoToEdit)
+
+    const [activeIconEntry, setActiveIconEntry] = useState(infoToEdit ? infoToEdit.connom_icon : 'LockSimpleIcon')
+
+    console.log(activeIconEntry)
 
     const { userLogin } = useUserLogin()
     const { requestDB } = useRequestDB()
 
-    const nameServiceEntry = useInput('')
-    const userEntry = useInput('')
-    const passwordEntry = useInput('')
+    const nameServiceEntry = useInput(infoToEdit ? infoToEdit.connom : '')
+    const userEntry = useInput(infoToEdit ? infoToEdit.conusuario : '')
+    const passwordEntry = useInput(infoToEdit ? infoToEdit.conpwd : '')
 
     const handleClickSaveEntry = async () => {
 

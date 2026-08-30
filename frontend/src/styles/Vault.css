@@ -25,17 +25,22 @@
 
     & .card-entry {
         position: relative;
-        padding: 24px;
+        padding: 16px 10px;
         border-radius: 14px;
         border: 2px solid var(--borderColorCard);
         background-color: #10172b;
 
+        & .name-category {
+            background-color: #1c2336;
+            font-family: fontSubtitle;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
         & .actions-card-entry {
             display: flex;
             gap: 12px;
-            position: absolute;
-            top: 14px;
-            right: 14px;
             & button {
                 
                 background-color: transparent;
@@ -104,7 +109,7 @@
                 border-radius: 10px;
                 outline: none;
                 border: 2px solid #252b3a;
-                padding-right: 100px;
+                padding-right: 80px;
                 background-color: #060e20;
                 color: var(--subtitlesColor);
 

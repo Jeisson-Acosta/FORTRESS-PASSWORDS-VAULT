@@ -23,6 +23,7 @@ function CardHeader({ title, value, colorValue }) {
 export function Vault() {
 
     const [showModalCreateEntry, setShowModalCreateEntry] = useState(false)
+    const [infoEntryToEdit, setInfoEntryToEdit] = useState({connom: '', conusuario: '', conpwd: '', connom_icon: '', catid: ''})
     const [selectedCategory, setSelectedCategory] = useState(null)
 
     const [infoVault, setInfoVault] = useState(null)
@@ -40,6 +41,30 @@ export function Vault() {
         resultDB.data[0].passwords_list = resultDB.data[0].passwords_list ? JSON.parse(resultDB.data[0].passwords_list) : resultDB.data[0].passwords_list
         setInfoVault(resultDB.data[0])
         setSelectedCategory(resultDB.data[0].category_list.find(cat => cat.catcod === 'PER').catid)
+    }
+
+    const handleClickEditEntry = async (entry) => {
+        setInfoEntryToEdit({
+            connom: entry.connom,
+            conusuario: entry.conusuario,
+            conpwd: entry.conpwd,
+            connom_icon: entry.connom_icon,
+            catid: entry.catid
+        })
+        setShowModalCreateEntry(true)
+    }
+
+    const handleClickDeleteEntry = async (conid) => {
+
+        const resultDB = await requestDB(`main/delete-app/${conid}`, 'DELETE')
+        if (!resultDB.ok) {
+            toast.error(resultDB.message)
+            return
+        }
+
+        toast.success('¡Entrada eliminada correctamente!')
+        getInfoVault()
+
     }
 
     useEffect(() => {
@@ -69,6 +94,17 @@ export function Vault() {
             <div style={{padding: '20px'}}>
 
                 <ButtonCategoryFilter categoryList={infoVault.category_list} />
+
+                {infoVault.passwords_list && 
+                    <button 
+                        onClick={() => setShowModalCreateEntry(true)}
+                        style={{padding: '6px 20px', marginBottom: '14px'}}
+                    >
+                        <PlusIcon />
+                        Nueva Entrada
+                    </button>
+                }
+
                 
                 {!infoVault.passwords_list 
                     && (
@@ -89,6 +125,7 @@ export function Vault() {
                     setSelectedCategory={setSelectedCategory}
                     categoryList={infoVault.category_list} 
                     getInfoVault={getInfoVault} 
+                    infoToEdit={infoEntryToEdit}
                 />
 
                 {infoVault.passwords_list && (
@@ -100,13 +137,22 @@ export function Vault() {
                             return (
                                 <>                                
                                     <div key={entry.conid} className='card-entry'>
-                                        <div className="actions-card-entry">
-                                            <button>
-                                                <PencilSimpleIcon />
-                                            </button>
-                                            <button>
-                                                <TrashIcon />
-                                            </button>
+                                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '14px', marginBottom: '14px'}}>
+                                            <div className="name-category">
+                                                {entry.catnom}
+                                            </div>
+                                            <div className="actions-card-entry">
+                                                <button
+                                                    onClick={() => handleClickEditEntry(entry)}
+                                                >
+                                                    <PencilSimpleIcon />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleClickDeleteEntry(entry.conid)}
+                                                >
+                                                    <TrashIcon />
+                                                </button>
+                                            </div>
                                         </div>
                                         <header>
                                             <div className="icon-entry">
@@ -124,6 +170,7 @@ export function Vault() {
                                         <div className="container-input-pwd-entry">
                                             <input 
                                                 type="password" 
+                                                value={entry.conpwd}
                                             />
                                             <div className="icons-actions-input-pwd">
                                                 <button className="icon-action-pwd">

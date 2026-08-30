@@ -10,6 +10,7 @@
     min-width: 220px;
     transform: translateX(-100%);
     transition: transform 0.8s ease;
+    z-index: 2;
     
     & .header-menu-app {
         display: flex;
