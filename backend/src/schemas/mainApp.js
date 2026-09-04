@@ -27,6 +27,11 @@ const getInfoVaultOptionSchema = z.object({
     usuid: z.string({ required_error: 'The parameter usuid is required' }).transform(id => Number(id))
 })
 
+const getPasswordAppSchema = z.object({
+    conid: z.string({ required_error: 'The parameter conid is required' }).transform(id => Number(id)),
+    usuid: z.string({ required_error: 'The parameter usuid is required' }).transform(id => Number(id))
+})
+
 export function validateDataCreateApp(data) {
     return createAppSchema.safeParse(data)
 }
@@ -41,4 +46,8 @@ export function validateDataDeleteAp(data) {
 
 export function validateDataGetInfoVaultOption(data) {
     return getInfoVaultOptionSchema.safeParse(data)
+}
+
+export function validateDataGetPasswordApp(data) {
+    return getPasswordAppSchema.safeParse(data)
 }

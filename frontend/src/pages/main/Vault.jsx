@@ -22,8 +22,11 @@ function CardHeader({ title, value, colorValue }) {
 
 export function Vault() {
 
+    const [showPassword, setShowPassword] = useState(false)
+    const [passwordToShow, setPasswordToShow] = useState('')
+
     const [showModalCreateEntry, setShowModalCreateEntry] = useState(false)
-    const [infoEntryToEdit, setInfoEntryToEdit] = useState({connom: '', conusuario: '', conpwd: '', connom_icon: '', catid: ''})
+    const [infoEntryToEdit, setInfoEntryToEdit] = useState({connom: '', conusuario: '', conpwd: '', connom_icon: '', catid: '', hasInfo: false})
     const [selectedCategory, setSelectedCategory] = useState(null)
 
     const [infoVault, setInfoVault] = useState(null)
@@ -45,11 +48,13 @@ export function Vault() {
 
     const handleClickEditEntry = async (entry) => {
         setInfoEntryToEdit({
+            conid: entry.conid,
             connom: entry.connom,
             conusuario: entry.conusuario,
             conpwd: entry.conpwd,
             connom_icon: entry.connom_icon,
-            catid: entry.catid
+            catid: entry.catid,
+            hasInfo: true
         })
         setShowModalCreateEntry(true)
     }
@@ -65,6 +70,20 @@ export function Vault() {
         toast.success('¡Entrada eliminada correctamente!')
         getInfoVault()
 
+    }
+
+    const handleClickShowPassword = async (conid) => {
+        
+        setShowPassword(true)
+
+        const resultDB = await requestDB(`main/get-password/${conid}/${userLogin.usuid}`, 'GET')
+        if (!resultDB.ok) {
+            toast.error(resultDB.message)
+            return
+        }
+
+        setPasswordToShow(resultDB.data[0].conpwd)
+        setTimeout(() => { setShowPassword(false) }, 5000)
     }
 
     useEffect(() => {
@@ -125,8 +144,19 @@ export function Vault() {
                     setSelectedCategory={setSelectedCategory}
                     categoryList={infoVault.category_list} 
                     getInfoVault={getInfoVault} 
+                    setInfoEntryToEdit={setInfoEntryToEdit}
                     infoToEdit={infoEntryToEdit}
                 />
+
+                {showPassword && (
+                    <aside className="modal-view-password">
+                        <section className="container-fields-modal">
+                            <h4>
+                                {passwordToShow}
+                            </h4>
+                        </section>
+                    </aside>
+                )}
 
                 {infoVault.passwords_list && (
                     <section className='container-grid-entries'>
@@ -173,7 +203,7 @@ export function Vault() {
                                                 value={entry.conpwd}
                                             />
                                             <div className="icons-actions-input-pwd">
-                                                <button className="icon-action-pwd">
+                                                <button className="icon-action-pwd" onClick={() => handleClickShowPassword(entry.conid)}>
                                                     <EyeIcon />
                                                 </button>
                                                 <button className="icon-action-pwd">

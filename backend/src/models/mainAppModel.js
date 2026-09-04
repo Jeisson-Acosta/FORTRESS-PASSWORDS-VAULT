@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { manageDB } from '../services/manageDB.js'
-
+import { decrypt, encrypt } from '../utils/encryption.js'
 export class MainAppModel {
 
     static async createApp({ data }) {
@@ -13,10 +13,10 @@ export class MainAppModel {
             catid
         } = data
 
-        // Hasheo de la contra de la app
-        const conpwdHash = await bcrypt.hash(conpwd, 10)
+        // Encriptar contraseña
+        const passwordEncrypted = encrypt(conpwd)
 
-        const resultDB = await manageDB('main_app_create_app', [null, connom, conusuario, conpwdHash, connom_icon, usuid, catid, 'INS'])
+        const resultDB = await manageDB('main_app_create_app', [null, connom, conusuario, passwordEncrypted, connom_icon, usuid, catid, 'INS'])
         return resultDB
     }
 
@@ -38,9 +38,10 @@ export class MainAppModel {
             return existedAppInDB
         }
 
-        const conpwdHash = await bcrypt.hash(conpwd, 10)
+        // Encriptar Contraseña
+        const passwordEncrypted = encrypt(conpwd)
 
-        const resultDB = await manageDB('main_app_create_app', [conid, connom, conusuario, conpwdHash, connom_icon, usuid, catid, 'UPD'])
+        const resultDB = await manageDB('main_app_create_app', [conid, connom, conusuario, passwordEncrypted, connom_icon, usuid, catid, 'UPD'])
         return resultDB
     }
 
@@ -66,6 +67,17 @@ export class MainAppModel {
         const { usuid } = data
 
         const resultDB = await manageDB('load_info_option_vault', [usuid])
+        return resultDB
+    }
+
+    static async getPasswordApp({ data }) {
+        const { conid, usuid } = data
+
+        const resultDB = await manageDB(null, [conid, usuid], 'SELECT conpwd FROM tbl_contras WHERE conid = ? AND usuid = ?', 'CO')
+
+        const passwordDecrypted = decrypt(resultDB.data[0].conpwd)
+        resultDB.data[0].conpwd = passwordDecrypted
+        
         return resultDB
     }
 

@@ -3,6 +3,7 @@ import cors from 'cors'
 import { authRouter } from './routes/auth.js'
 import { mainAppRouter } from './routes/mainApp.js'
 import { categoryRouter } from './routes/category.js'
+import crypto from 'node:crypto'
 
 const app = express()
 
@@ -28,6 +29,5 @@ app.use('/main', mainAppRouter)
 app.use('/category', categoryRouter)
 
 app.listen(5000, () => {
-    // console.log(process.env)
     console.log(`App running on: http://localhost:5000`)
 })

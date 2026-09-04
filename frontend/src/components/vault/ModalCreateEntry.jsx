@@ -1,5 +1,5 @@
 import '../../styles/vault/ModalCreateEntry.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUserLogin } from '../../hooks/useUserLogin.js'
 import { useRequestDB } from '../../hooks/utils/useRequestDB.js'
 import { useInput } from '../../hooks/useInput.js'
@@ -9,20 +9,40 @@ import { Input } from '../Input.jsx'
 import { IconsEntries } from '../IconsEntries.jsx'
 import { GlobeIcon, UserCircleIcon, LockSimpleIcon } from '../Icons.jsx'
 
-export function ModalCreateEntry({ showModalCreateEntry, setShowModalCreateEntry, selectedCategory, setSelectedCategory, categoryList, getInfoVault, infoToEdit = null }) {
+export function ModalCreateEntry({ showModalCreateEntry, setShowModalCreateEntry, selectedCategory, setSelectedCategory, categoryList, getInfoVault, setInfoEntryToEdit, infoToEdit = null }) {
 
-    console.log(infoToEdit)
 
-    const [activeIconEntry, setActiveIconEntry] = useState(infoToEdit ? infoToEdit.connom_icon : 'LockSimpleIcon')
-
-    console.log(activeIconEntry)
-
+    const [activeIconEntry, setActiveIconEntry] = useState('LockSimpleIcon')
     const { userLogin } = useUserLogin()
     const { requestDB } = useRequestDB()
 
-    const nameServiceEntry = useInput(infoToEdit ? infoToEdit.connom : '')
-    const userEntry = useInput(infoToEdit ? infoToEdit.conusuario : '')
-    const passwordEntry = useInput(infoToEdit ? infoToEdit.conpwd : '')
+    const nameServiceEntry = useInput('')
+    const userEntry = useInput('')
+    const passwordEntry = useInput('')
+
+    useEffect(() => {
+
+        if (infoToEdit.hasInfo) {
+
+            setActiveIconEntry(infoToEdit.connom_icon)
+            nameServiceEntry .value = infoToEdit.connom
+            userEntry.value = infoToEdit.conusuario
+            passwordEntry.value = infoToEdit.conpwd
+
+        } else {
+            nameServiceEntry.value = ''
+            userEntry.value = ''
+            passwordEntry.value = ''
+        }
+
+    }, [infoToEdit])
+
+    const handleClickCancelEntry = () => {
+
+        setInfoEntryToEdit({connom: '', conusuario: '', conpwd: '', connom_icon: '', catid: '', hasInfo: false})
+        setShowModalCreateEntry(false)
+    }
+
 
     const handleClickSaveEntry = async () => {
 
@@ -32,6 +52,7 @@ export function ModalCreateEntry({ showModalCreateEntry, setShowModalCreateEntry
         }
 
         const infoToSave = {
+            conid: infoToEdit.hasInfo ? infoToEdit.conid : null,
             connom: nameServiceEntry.value,
             conusuario: userEntry.value,
             conpwd: passwordEntry.value,
@@ -40,16 +61,19 @@ export function ModalCreateEntry({ showModalCreateEntry, setShowModalCreateEntry
             catid: Number(selectedCategory),
         }
 
-        const resultDB = await requestDB('main/create-app', 'POST', infoToSave)
+        const URL = infoToEdit.hasInfo ? 'main/update-app' : 'main/create-app'
+
+        const resultDB = await requestDB(URL, infoToEdit.hasInfo ? 'PATCH' : 'POST', infoToSave)
         if (!resultDB.ok) {
             toast.error(resultDB.message)
             return
         }
 
-        toast.success('¡Entrada creada correctamente!')
+        toast.success(!infoToEdit.hasInfo ? '¡Entrada creada correctamente!' : '¡Entrada actualizada correctamente!')
         setShowModalCreateEntry(false)
         setActiveIconEntry('LockSimpleIcon')
         setSelectedCategory(null)
+        setInfoEntryToEdit({connom: '', conusuario: '', conpwd: '', connom_icon: '', catid: '', hasInfo: false})
 
         getInfoVault()
 
@@ -135,7 +159,7 @@ export function ModalCreateEntry({ showModalCreateEntry, setShowModalCreateEntry
                     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px'}}>
                         <button 
                             style={{width: '100%', backgroundColor: 'transparent', color: 'var(--mainColor)', border: '1px solid #252b3a'}}
-                            onClick={() => setShowModalCreateEntry(false)}
+                            onClick={handleClickCancelEntry}
                         >
                             Cancelar
                         </button>

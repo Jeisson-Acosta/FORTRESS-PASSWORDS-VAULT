@@ -73,3 +73,6 @@ DELETE http://localhost:5000/category/delete/2
 
 ### Cargar informacion de la opcion de la boveda
 GET http://localhost:5000/main/get-info-vault/1
+
+### Obtener una contraseña de una app
+GET http://localhost:5000/main/get-password/1/1
