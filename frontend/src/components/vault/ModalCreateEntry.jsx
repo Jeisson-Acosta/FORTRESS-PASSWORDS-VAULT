@@ -25,14 +25,14 @@ export function ModalCreateEntry({ showModalCreateEntry, setShowModalCreateEntry
         if (infoToEdit.hasInfo) {
 
             setActiveIconEntry(infoToEdit.connom_icon)
-            nameServiceEntry .value = infoToEdit.connom
-            userEntry.value = infoToEdit.conusuario
-            passwordEntry.value = infoToEdit.conpwd
+            nameServiceEntry.onChange({ target: { value: infoToEdit.connom } })
+            userEntry.onChange({ target: { value: infoToEdit.conusuario } })
+            passwordEntry.onChange({ target: { value: infoToEdit.conpwd } })
 
         } else {
-            nameServiceEntry.value = ''
-            userEntry.value = ''
-            passwordEntry.value = ''
+            nameServiceEntry.onChange({ target: { value: '' } })
+            userEntry.onChange({ target: { value: '' } })
+            passwordEntry.onChange({ target: { value: '' } })
         }
 
     }, [infoToEdit])

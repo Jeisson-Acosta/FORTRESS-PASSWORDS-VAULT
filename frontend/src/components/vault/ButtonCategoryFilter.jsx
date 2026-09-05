@@ -1,9 +1,20 @@
 import '../../styles/vault/ButtonCategoryFilter.css'
 import { useState } from "react"
 
-export function ButtonCategoryFilter({ categoryList }) {
+export function ButtonCategoryFilter({ categoryList, listEntries, setInfoVaultFiltered }) {
 
+    
     const [filterActive, setFilterActive] = useState('TOD')
+    
+    const handleClickFilterBtn = (catcod) => {
+        setFilterActive(catcod)
+
+        if (catcod === 'TOD') {
+            setInfoVaultFiltered(listEntries)
+        } else {
+            setInfoVaultFiltered(listEntries.filter(entry => entry.catcod === catcod))
+        }
+    }
 
     if (!categoryList) return
 
@@ -11,7 +22,7 @@ export function ButtonCategoryFilter({ categoryList }) {
         <div className='list-categories'>
             <button 
                 className={`bt-category ${filterActive === 'TOD' ? 'active' : ''}`}
-                onClick={() => setFilterActive('TOD')}
+                onClick={() => handleClickFilterBtn('TOD')}
             >
                 Todas
             </button>
@@ -19,7 +30,7 @@ export function ButtonCategoryFilter({ categoryList }) {
                 <button 
                     className={`bt-category ${filterActive === category.catcod ? 'active' : ''}`} 
                     key={category.catid}
-                    onClick={() => setFilterActive(category.catcod)}
+                    onClick={() => handleClickFilterBtn(category.catcod)}
                 >
                     {category.catnom}
                 </button>
