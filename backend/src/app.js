@@ -4,6 +4,7 @@ import { authRouter } from './routes/auth.js'
 import { mainAppRouter } from './routes/mainApp.js'
 import { categoryRouter } from './routes/category.js'
 import { logRouter } from './routes/log.js'
+import dotenv from 'dotenv'
 
 dotenv.config({ path: '../.env' })
 
