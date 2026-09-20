@@ -4,14 +4,18 @@ import { authRouter } from './routes/auth.js'
 import { mainAppRouter } from './routes/mainApp.js'
 import { categoryRouter } from './routes/category.js'
 import { logRouter } from './routes/log.js'
-import crypto from 'node:crypto'
+
+dotenv.config({ path: '../.env' })
 
 const app = express()
+
+const PORT = process.env.PORT ?? 5000
 
 app.use(cors({
     origin: (origin, callback) => {
         const ACCEPTED_ORIGINS = [
-            'http://localhost:5173'
+            'http://localhost:5173',
+            'https://cefcocapp.netlify.app'
         ]
 
         if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
@@ -30,6 +34,6 @@ app.use('/main', mainAppRouter)
 app.use('/category', categoryRouter)
 app.use('/log', logRouter)
 
-app.listen(5000, () => {
-    console.log(`App running on: http://localhost:5000`)
+app.listen(PORT, () => {
+    console.log(`App running on: http://localhost:${PORT}`)
 })
