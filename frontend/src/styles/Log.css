@@ -1,0 +1,66 @@
+.container-table-log {
+    border-radius: 14px;
+    border: 2px solid var(--borderColorCard);
+    background-color: #10172b;
+    overflow-x: auto;
+    max-height: 640px;
+}
+
+.table-log {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: fontSubtitle;
+    font-size: 14px;
+
+    & thead {
+        & th {
+            text-align: left;
+            padding: 16px 20px;
+            font-size: 12px;
+            font-weight: normal;
+            color: var(--mainColor);
+            border-bottom: 2px solid var(--borderColorCard);
+            white-space: nowrap;
+        }
+    }
+
+    & tbody {
+        & tr {
+            border-bottom: 1px solid #182033;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        & td {
+            padding: 14px 20px;
+            color: var(--subtitlesColor);
+            white-space: nowrap;
+        }
+    }
+}
+
+.badge-log-type {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.log-type-ins {
+    background-color: rgba(53, 212, 136, 0.15);
+    color: #35d488;
+}
+
+.log-type-upd {
+    background-color: rgba(247, 201, 72, 0.15);
+    color: #f7c948;
+}
+
+.log-type-del {
+    background-color: rgba(242, 85, 76, 0.15);
+    color: #f2554c;
+}

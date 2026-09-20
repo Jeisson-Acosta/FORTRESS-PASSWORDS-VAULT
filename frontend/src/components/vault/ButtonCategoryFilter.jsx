@@ -1,10 +1,10 @@
 import '../../styles/vault/ButtonCategoryFilter.css'
 import { useState } from "react"
 
-export function ButtonCategoryFilter({ categoryList, listEntries, setInfoVaultFiltered }) {
+export function ButtonCategoryFilter({ categoryList, listEntries, setInfoVaultFiltered, initialFilter }) {
 
-    
-    const [filterActive, setFilterActive] = useState('TOD')
+
+    const [filterActive, setFilterActive] = useState(initialFilter || 'TOD')
     
     const handleClickFilterBtn = (catcod) => {
         setFilterActive(catcod)

@@ -1,0 +1,83 @@
+.modal-create-category {
+    background-color: rgba(0, 0, 0, 0.75);
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+
+    & .container-fields-modal {
+        background-color: #131c2f;
+        padding: 30px;
+        border-radius: 16px;
+        max-width: calc(100% - 10px);
+        width: 420px;
+
+        & header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+
+            & .title-modal-category {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+
+                & .icon-title-modal-category {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 10px;
+                    border-radius: 10px;
+                    background-color: #1c2336;
+                    border: 3px solid #22283b;
+                    flex-shrink: 0;
+
+                    & svg {
+                        width: 22px;
+                        height: 22px;
+                    }
+                }
+
+                & p {
+                    margin-top: 4px;
+                    font-size: 13px;
+                }
+            }
+
+            & .bt-close-modal-category {
+                background-color: transparent;
+                padding: 4px;
+
+                & svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+
+        & .container-all-fields {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+
+            & label {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                font-family: fontSubtitle;
+                font-size: 13px;
+                color: var(--subtitlesColor);
+            }
+
+            & input:disabled {
+                opacity: .6;
+                cursor: not-allowed;
+            }
+        }
+    }
+}

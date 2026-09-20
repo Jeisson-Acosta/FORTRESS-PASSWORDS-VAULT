@@ -48,6 +48,9 @@ Content-Type: application/json
 ### Eliminar una app creada
 DELETE http://localhost:5000/main/delete-app/2
 
+### Obtener categorias
+GET http://localhost:5000/category/1
+
 ### Crear una categoria
 POST http://localhost:5000/category/create
 Content-Type: application/json

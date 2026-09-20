@@ -1,5 +1,9 @@
 import z from 'zod'
 
+const getCategoriesShema = z.object({
+    usuid: z.string({ required_error: 'The parameter usuid is required' }).transform(val => Number(val))
+})
+
 const createCategorySchema = z.object({
     catcod: z.string({ required_error: 'The parameter catcod is required' }),
     catnom: z.string({ required_error: 'The parameter catnom is required' }),
@@ -15,6 +19,10 @@ const updateCategorySchema = z.object({
 const deleleteCategorySchema = z.object({
     catid: z.string({ required_error: 'The parameter catid is required' }).transform(arg => Number(arg))
 })
+
+export function validateDataGetCategories(data) {
+    return getCategoriesShema.safeParse(data)
+}
 
 export function validateDataCreateCategory(data) {
     return createCategorySchema.safeParse(data)

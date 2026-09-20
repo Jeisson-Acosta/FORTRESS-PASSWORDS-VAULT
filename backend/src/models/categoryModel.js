@@ -2,6 +2,11 @@ import { manageDB } from "../services/manageDB.js"
 
 export class CategoryModel {
 
+    static async getCategories({ usuid }) {
+        const resultDB = await manageDB('category_get_list_x_user', [usuid])
+        return resultDB
+    }
+
     static async createCategory ({ data }) {
 
         const { catcod, catnom, usuid } = data

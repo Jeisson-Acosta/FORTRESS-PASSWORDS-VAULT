@@ -2,6 +2,7 @@ import '../../styles/Vault.css'
 import { useUserLogin } from '../../hooks/useUserLogin.js'
 import { useRequestDB } from '../../hooks/utils/useRequestDB.js'
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import toast from 'react-hot-toast'
 import { PlusIcon } from '../../components/Icons.jsx'
@@ -36,6 +37,7 @@ export function Vault() {
 
     const { userLogin } = useUserLogin()
     const { requestDB, isLoading } = useRequestDB()
+    const location = useLocation()
 
     const getInfoVault = async () => {
         const resultDB = await requestDB(`main/get-info-vault/${userLogin.usuid}`, 'GET')
@@ -48,6 +50,12 @@ export function Vault() {
         resultDB.data[0].passwords_list = resultDB.data[0].passwords_list ? JSON.parse(resultDB.data[0].passwords_list) : resultDB.data[0].passwords_list
         setInfoVault(resultDB.data[0])
         setSelectedCategory(resultDB.data[0].category_list.find(cat => cat.catcod === 'PER').catid)
+
+        // Si venimos desde Categorias con un filtro de categoria seleccionado, lo aplicamos
+        const filterCatcod = location.state?.filterCatcod
+        if (filterCatcod && filterCatcod !== 'TOD' && resultDB.data[0].passwords_list) {
+            setInfoVaultFiltered(resultDB.data[0].passwords_list.filter(entry => entry.catcod === filterCatcod))
+        }
     }
 
     const handleClickEditEntry = async (entry) => {
@@ -104,10 +112,11 @@ export function Vault() {
 
             <div style={{padding: '20px'}}>
 
-                <ButtonCategoryFilter 
-                    categoryList={infoVault.category_list} 
+                <ButtonCategoryFilter
+                    categoryList={infoVault.category_list}
                     listEntries={infoVault.passwords_list}
                     setInfoVaultFiltered={setInfoVaultFiltered}
+                    initialFilter={location.state?.filterCatcod}
                 />
 
                 {infoVault.passwords_list && 

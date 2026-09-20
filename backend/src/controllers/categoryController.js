@@ -1,7 +1,17 @@
 import { CategoryModel } from "../models/categoryModel.js"
-import { validateDataCreateCategory, validateDataDeleteCategory, validateDataUpdateCategory } from "../schemas/category.js"
+import { validateDataCreateCategory, validateDataDeleteCategory, validateDataGetCategories, validateDataUpdateCategory } from "../schemas/category.js"
 
 export class CategoryController {
+
+    static async getCategories(req, res) {
+        const responseValidateData = validateDataGetCategories(req.params)
+        if (!responseValidateData.success) { return res.status(400).json({ error: JSON.parse(responseValidateData.error.message) }) }
+
+        const responseModel = await CategoryModel.getCategories({ usuid: responseValidateData.data.usuid })
+        if (!responseModel.ok) { return res.status(500).json(responseModel) }
+
+        return res.json(responseModel)
+    }
 
     static async createCategory(req, res) {
         const responseValidateData = validateDataCreateCategory(req.body)
