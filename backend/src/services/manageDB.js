@@ -3,8 +3,7 @@ import dotenv from 'dotenv'
 
 dotenv.config({ path: '../.env' })
 
-// const ENV =  process.env.NODE_ENV
-const ENV =  process.env.NODE_PRO
+const ENV =  process.env.NODE_ENV
 
 const CONFIG_DB = {
     host: process.env[`DB_HOST_${ENV}`],
